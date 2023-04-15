@@ -1,0 +1,50 @@
+Name:         db
+Namespace:    default
+Labels:       app=db
+              component=db
+              prometheus=kube-prometheus
+              release=kube-prometheus-stack
+Annotations:  <none>
+API Version:  monitoring.coreos.com/v1
+Kind:         ServiceMonitor
+Metadata:
+  Creation Timestamp:  2023-04-11T16:19:35Z
+  Generation:          1
+  Managed Fields:
+    API Version:  monitoring.coreos.com/v1
+    Fields Type:  FieldsV1
+    fieldsV1:
+      f:metadata:
+        f:annotations:
+          .:
+          f:kubectl.kubernetes.io/last-applied-configuration:
+        f:labels:
+          .:
+          f:app:
+          f:component:
+          f:prometheus:
+          f:release:
+      f:spec:
+        .:
+        f:endpoints:
+        f:namespaceSelector:
+          .:
+          f:matchNames:
+        f:selector:
+    Manager:         kubectl-client-side-apply
+    Operation:       Update
+    Time:            2023-04-11T16:19:35Z
+  Resource Version:  6055
+  UID:               114094f5-158f-4120-a314-636fa1adb205
+Spec:
+  Endpoints:
+    Interval:  30s
+    Path:      /metrics
+    Port:      metrics
+  Namespace Selector:
+    Match Names:
+      default
+  Selector:
+    Match Labels:
+      App:  db
+Events:     <none>

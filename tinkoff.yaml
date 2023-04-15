@@ -1,0 +1,79 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: tinkoff
+  labels:
+    app: tinkoff
+  annotations:
+    # set to true if you want our custom prometheus scraper job to gather custom metrics
+    prometheus.io/path: /metrics
+    prometheus.io/scrape: "false"
+spec:
+  selector:
+    app: tinkoff
+  ports:
+    - port: 8082
+      name: grpc
+      protocol: TCP
+    - name: metrics
+      port: 9095
+      protocol: TCP
+      targetPort: 9095
+  type: NodePort
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tinkoff
+  labels:
+    app: tinkoff
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: tinkoff
+      labels:
+        app: tinkoff
+    spec:
+      containers:
+        - name: tinkoff
+          image: nikitatrojan/tinkoff
+          args:
+          - -Dconfig.resource=application.conf
+          - -Dlogger.resource=logback.xml
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8082
+              name: grpc
+            - containerPort: 9095
+              name: metrics
+              protocol: TCP
+          env:
+            - name: DB_SERVICE_HOST
+              value: "db"
+            - name: DB_SERVICE_PORT
+              value: "8081"
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: tinkoff
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: tinkoff
+  labels:
+    release: stable
+spec:
+  namespaceSelector:
+    matchNames:
+      - default
+  selector:
+    matchLabels:
+      app: tinkoff
+  jobLabel: tinkoff
+  endpoints:
+    - interval: 30s
+      port: 'metrics'
+      path: /metrics

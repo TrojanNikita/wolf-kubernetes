@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  namespace: default
+  name: postgres
+  labels:
+    app: postgres
+spec:
+  serviceName: postgres
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      nodeName: "minikube"
+      containers:
+      - name: postgres
+        image: postgres:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 5432
+        volumeMounts:
+        - name: db-postgres
+          mountPath: "/var/lib/postgresql/data"
+        env:
+        - name: POSTGRES_PASSWORD
+          value: "postgres"
+      volumes:
+      - name: db-postgres
+        hostPath:
+          path: "/postgresql"
+          type: Directory
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: default
+  name: postgres
+  labels:
+    app: postgres
+spec:
+  selector:
+    app: postgres
+  ports:
+    - port: 5432
+      name: http
+      protocol: TCP

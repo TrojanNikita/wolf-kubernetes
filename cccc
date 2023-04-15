@@ -1,0 +1,62 @@
+Name:         stable-kube-state-metrics
+Namespace:    default
+Labels:       app.kubernetes.io/component=metrics
+              app.kubernetes.io/instance=stable
+              app.kubernetes.io/managed-by=Helm
+              app.kubernetes.io/name=kube-state-metrics
+              app.kubernetes.io/part-of=kube-state-metrics
+              app.kubernetes.io/version=2.8.2
+              helm.sh/chart=kube-state-metrics-5.0.1
+              release=stable
+Annotations:  meta.helm.sh/release-name: stable
+              meta.helm.sh/release-namespace: default
+API Version:  monitoring.coreos.com/v1
+Kind:         ServiceMonitor
+Metadata:
+  Creation Timestamp:  2023-04-11T14:09:49Z
+  Generation:          1
+  Managed Fields:
+    API Version:  monitoring.coreos.com/v1
+    Fields Type:  FieldsV1
+    fieldsV1:
+      f:metadata:
+        f:annotations:
+          .:
+          f:meta.helm.sh/release-name:
+          f:meta.helm.sh/release-namespace:
+        f:labels:
+          .:
+          f:app.kubernetes.io/component:
+          f:app.kubernetes.io/instance:
+          f:app.kubernetes.io/managed-by:
+          f:app.kubernetes.io/name:
+          f:app.kubernetes.io/part-of:
+          f:app.kubernetes.io/version:
+          f:helm.sh/chart:
+          f:release:
+      f:spec:
+        .:
+        f:endpoints:
+        f:jobLabel:
+        f:selector:
+    Manager:         helm
+    Operation:       Update
+    Time:            2023-04-11T14:09:49Z
+  Resource Version:  1207
+  UID:               8890e86a-c200-4c3d-9c93-5fcc7d70da16
+Spec:
+  Endpoints:
+    Honor Labels:  true
+    Port:          http
+  Job Label:       app.kubernetes.io/name
+  Selector:
+    Match Labels:
+      app.kubernetes.io/instance:  stable
+      app.kubernetes.io/name:      kube-state-metrics
+Events:                            <none>
+
+
+
+
+
+

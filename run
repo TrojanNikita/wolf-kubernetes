@@ -1,0 +1,7 @@
+CREATE ROLE trojan WITH LOGIN;
+ALTER ROLE trojan CREATEDB;
+
+psql postgres -U trojan
+
+CREATE DATABASE bot;
+GRANT ALL PRIVILEGES ON DATABASE bot TO trojan;

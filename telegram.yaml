@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: telegram
+spec:
+  selector:
+    app: telegram
+  ports:
+    - port: 8080
+      name: http
+      protocol: TCP
+  type: NodePort
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: telegram
+  labels:
+    app: telegram
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: telegram
+      labels:
+        app: telegram
+    spec:
+      containers:
+        - name: telegram
+          image: nikitatrojan/telegram
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              name: http
+          env:
+            - name: DB_SERVICE_HOST
+              value: "db"
+            - name: DB_SERVICE_PORT
+              value: "8081"
+            - name: TELEGRAM_TOKEN
+              value: "6249256284:AAFqE-jGK7-dZRE9d5g2aPPk8VOSwESXT4U"
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: telegram

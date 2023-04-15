@@ -1,0 +1,88 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: db
+  labels:
+    app: db
+  annotations:
+    # set to true if you want our custom prometheus scraper job to gather custom metrics
+    prometheus.io/path: /metrics
+    prometheus.io/scrape: "false"
+spec:
+  selector:
+    app: db
+  ports:
+    - port: 8081
+      name: grpc
+      protocol: TCP
+    - name: metrics
+      port: 9095
+      protocol: TCP
+      targetPort: 9095
+  type: NodePort
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db
+  labels:
+    app: db
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: db
+      labels:
+        app: db
+    spec:
+      containers:
+        - name: db
+          image: nikitatrojan/db
+          args:
+          - -Dconfig.resource=application.conf
+          - -Dlogger.resource=logback.xml
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8081
+              name: grpc
+            - containerPort: 9095
+              name: metrics
+              protocol: TCP
+          env:
+            - name: DB_SERVICE_PORT
+              value: "8081"
+            - name: POSTGRES_URL
+              value: "jdbc:postgresql://postgres:5432/bot"
+            - name: POSTGRES_USER
+              value: "trojan"
+            - name: POSTGRES_PASSWORD
+              value: ""
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: db
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  # clusterName: ""
+  name: db
+  labels:
+    # app: db
+    # prometheus: 'kube-prometheus'
+    release: stable
+    # component: db
+  # namespace: monitoring
+spec:
+  namespaceSelector:
+    matchNames:
+      - default
+  selector:
+    matchLabels:
+      app: db
+  jobLabel: db
+  endpoints:
+    - interval: 30s
+      port: 'metrics'
+      path: /metrics
