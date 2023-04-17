@@ -1,6 +1,10 @@
 WAoBJCJqomMQX7dMMS9RTjfBtOvGNKbV7nmUYrc6
 
 
+METRICS
+http://www.mtitek.com/tutorials/kubernetes/kubernetes_metrics.php
+
+
 
 apk update && apk add iproute2-ss
 

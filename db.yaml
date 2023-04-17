@@ -62,27 +62,22 @@ spec:
   selector:
     matchLabels:
       app: db
----
-apiVersion: monitoring.coreos.com/v1
-kind: ServiceMonitor
-metadata:
-  # clusterName: ""
-  name: db
-  labels:
-    # app: db
-    # prometheus: 'kube-prometheus'
-    release: stable
-    # component: db
-  # namespace: monitoring
-spec:
-  namespaceSelector:
-    matchNames:
-      - default
-  selector:
-    matchLabels:
-      app: db
-  jobLabel: db
-  endpoints:
-    - interval: 30s
-      port: 'metrics'
-      path: /metrics
+# ---
+# apiVersion: monitoring.coreos.com/v1
+# kind: ServiceMonitor
+# metadata:
+#   name: db
+#   labels:
+#     release: stable
+# spec:
+#   namespaceSelector:
+#     matchNames:
+#       - default
+#   selector:
+#     matchLabels:
+#       app: db
+#   jobLabel: db
+#   endpoints:
+#     - interval: 30s
+#       port: 'metrics'
+#       path: /metrics
