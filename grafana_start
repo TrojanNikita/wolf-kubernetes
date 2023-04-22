@@ -1,6 +1,13 @@
 WAoBJCJqomMQX7dMMS9RTjfBtOvGNKbV7nmUYrc6
 
 
+DUMP
+Write
+kubectl exec -it postgres-0 -- pg_dump bot -c -U trojan > dump_`date +%d-%m-%Y"_"%H_%M_%S`.sql
+Read
+kubectl exec -it postgres-0 -- psql -U trojan bot < dump_.....sql
+
+
 METRICS
 http://www.mtitek.com/tutorials/kubernetes/kubernetes_metrics.php
 

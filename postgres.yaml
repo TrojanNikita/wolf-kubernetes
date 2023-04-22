@@ -32,7 +32,7 @@ spec:
       volumes:
       - name: db-postgres
         hostPath:
-          path: "/postgresql"
+          path: "/volumes/postgres"
           type: Directory
       restartPolicy: Always
 ---

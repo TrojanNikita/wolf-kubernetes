@@ -39,9 +39,9 @@ spec:
       containers:
         - name: db
           image: nikitatrojan/db
-          args:
-          - -Dconfig.resource=application.conf
-          - -Dlogger.resource=logback.xml
+          # args:
+          # - -Dconfig.resource=application.conf
+          # - -Dlogger.resource=logback.xml
           imagePullPolicy: Always
           ports:
             - containerPort: 8081
