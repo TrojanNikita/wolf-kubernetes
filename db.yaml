@@ -39,9 +39,6 @@ spec:
       containers:
         - name: db
           image: nikitatrojan/db
-          # args:
-          # - -Dconfig.resource=application.conf
-          # - -Dlogger.resource=logback.xml
           imagePullPolicy: Always
           ports:
             - containerPort: 8081
@@ -52,6 +49,10 @@ spec:
           env:
             - name: DB_SERVICE_PORT
               value: "8081"
+            - name: TELEGRAM_SERVICE_HOST
+              value: "telegram"
+            - name: TELEGRAM_SERVICE_PORT
+              value: "8082"
             - name: POSTGRES_URL
               value: "jdbc:postgresql://postgres:5432/bot"
             - name: POSTGRES_USER
